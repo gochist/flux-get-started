@@ -14,3 +14,24 @@ spec:
     port: 9898
     protocol: TCP
     targetPort: http
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: demo
+  labels:
+    app: podinfo
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+spec:
+  rules:
+  - host: test.shadow.samsunggsredev.com
+    http:
+      paths:
+      - backend:
+          serviceName: podinfo
+          servicePort: 9898
+        path: /
